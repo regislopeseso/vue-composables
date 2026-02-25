@@ -7,7 +7,19 @@ export const useCycleList = (list: MaybeRefOrGetter<any[]>) => {
 
   const _list = toRef(list);
 
-  const state = computed(() => _list.value[activeIndex.value]);
+  const state = computed({
+    get() {
+      return _list.value[activeIndex.value];
+    },
+    set(value) {
+      const foundIndex = _list.value.indexOf(value);
+      if (!foundIndex || foundIndex === -1) {
+        throw new Error(`Value ${value} not found in list`);
+      }
+
+      activeIndex.value = foundIndex;
+    },
+  });
 
   function next() {
     if (activeIndex.value === _list.value.length - 1) {

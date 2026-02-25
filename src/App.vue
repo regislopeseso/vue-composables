@@ -6,6 +6,8 @@ const animals = ref(["Dog", "Cat", "Bird", "Iguana"]);
 
 const { state, prev, next, go } = useCycleList(animals);
 
+state.value = "Hog";
+
 // const { state, prev, next, go } = useCycleList([
 //   "Dog",
 //   "Cat",
