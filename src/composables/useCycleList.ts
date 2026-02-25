@@ -12,8 +12,8 @@ export const useCycleListConfigDefaults: useCycleListConfig = {
   fallbackValue: undefined,
 };
 
-export const useCycleList = (
-  list: MaybeRefOrGetter<any[]>,
+export const useCycleList = <T>(
+  list: MaybeRefOrGetter<T[]>,
   config?: useCycleListConfig,
 ) => {
   const _config = {
@@ -23,13 +23,17 @@ export const useCycleList = (
 
   const activeIndex = ref(0);
 
-  const _list = toRef(list);
+  const _list = toRef(list) as Ref<T[]>;
 
   const state = computed({
     get() {
       return _list.value[activeIndex.value];
     },
     set(value) {
+      if (value === undefined) {
+        return;
+      }
+
       const foundIndex = _list.value.indexOf(value);
 
       if (!foundIndex || foundIndex === -1) {
