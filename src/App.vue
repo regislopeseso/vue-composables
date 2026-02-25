@@ -4,7 +4,10 @@ import { useCycleList } from "./composables/useCycleList";
 
 const animals = ref(["Dog", "Cat", "Bird", "Iguana"]);
 
-const { state, prev, next, go } = useCycleList(animals);
+const { state, prev, next, go } = useCycleList(animals, {
+  fallbackIndex: 0,
+  fallbackValue: "Dog",
+});
 
 state.value = "Hog";
 
