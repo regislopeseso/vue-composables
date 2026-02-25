@@ -6,7 +6,7 @@ const animals = ref(["Dog", "Cat", "Bird", "Iguana"]);
 
 const { state, prev, next, go } = useCycleList(animals, {
   fallbackIndex: 0,
-  fallbackValue: "Dog",
+  fallbackValue: "Iguana",
 });
 
 state.value = "Hog";

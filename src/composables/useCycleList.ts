@@ -31,8 +31,16 @@ export const useCycleList = (
     },
     set(value) {
       const foundIndex = _list.value.indexOf(value);
+
       if (!foundIndex || foundIndex === -1) {
-        throw new Error(`Value ${value} not found in list`);
+        const foundFallbackIndex = _list.value.indexOf(_config.fallbackValue);
+
+        if (foundFallbackIndex === -1) {
+          throw new Error(`Value ${value} not found in list`);
+        }
+        activeIndex.value = foundFallbackIndex;
+
+        return;
       }
 
       activeIndex.value = foundIndex;
@@ -56,10 +64,14 @@ export const useCycleList = (
   }
 
   function go(index: number) {
-    if (index >= _list.value.length) {
-      throw new Error(
-        `Cannot go to index ${index}. The list provided to useCycleList is not that long.`,
-      );
+    if (index < 0 || index >= _list.value.length) {
+      if (typeof _config.fallbackIndex != "undefined") {
+        activeIndex.value = _config.fallbackIndex;
+      } else {
+        throw new Error(
+          `Cannot go to index ${index}. The list provided to useCycleList is not that long.`,
+        );
+      }
     } else {
       activeIndex.value = index;
     }
